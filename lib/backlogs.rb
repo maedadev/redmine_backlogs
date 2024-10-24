@@ -75,7 +75,7 @@ module Backlogs
     }
 
     plugin_version = Redmine::Plugin.find(:redmine_backlogs).version
-    return "#{Redmine::VERSION}. You are running backlogs #{plugin_version}, latest version is #{travis['release']}" if plugin_version != travis['release']
+    return "#{Redmine::VERSION}. You are running backlogs #{plugin_version}"
 
     supported = matrix.select{|cell| cell[:platform] == platform}
     raise "Unsupported platform #{platform}" unless supported.size > 0
