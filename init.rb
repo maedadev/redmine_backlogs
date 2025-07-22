@@ -34,7 +34,6 @@ if Rails.version > '6.0' && Rails.autoloaders.zeitwerk_enabled?
     require_relative 'lib/backlogs_printable_cards'
 
     Redmine::AccessControl.permission(:manage_versions).actions << "rb_sprints/close_completed"
-    FileUtils.cp(File.dirname(__FILE__) + '/test/fixtures/issues.yml', Rails.root + 'test/fixtures/')
   end
 else
   Rails.configuration.to_prepare do
@@ -81,8 +80,6 @@ else
     require_dependency 'backlogs/linear_regression'
 
     Redmine::AccessControl.permission(:manage_versions).actions << "rb_sprints/close_completed"
-
-    FileUtils.cp(File.dirname(__FILE__) + '/test/fixtures/issues.yml', Rails.root + 'test/fixtures/')
   end
 end
 
