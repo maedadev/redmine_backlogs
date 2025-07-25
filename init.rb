@@ -10,7 +10,7 @@ if Rails.version > '6.0' && Rails.autoloaders.zeitwerk_enabled?
   end
   require_relative 'lib/backlogs/active_record/list_with_gaps'
   require_relative 'lib/backlogs_version_patch'
-  ActiveSupport::Reloader.to_prepare do
+  Rails.application.config.after_initialize do
     require_relative 'lib/backlogs_nested_set_patch'
     require_relative 'lib/backlogs/active_record'
     require_relative 'lib/backlogs/active_record/attributes'
