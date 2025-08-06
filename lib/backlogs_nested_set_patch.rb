@@ -15,25 +15,26 @@ module BacklogsNestedSetPatch
     end
 
     def move_to(target, position)
-      lock_nested_set
-      reload_nested_set_values
+      lock_nested_set do
+        reload_nested_set_values
 
-      if !root? && !move_possible?(target)
-        raise ImpossibleMove, "Impossible move, target node cannot be inside moved tree."
+        if !root? && !move_possible?(target)
+          raise ImpossibleMove, "Impossible move, target node cannot be inside moved tree."
+        end
+
+        bound, other_bound = get_boundaries(target, position)
+
+        # there would be no change
+        return if bound == rgt || bound == lft
+
+        # we have defined the boundaries of two non-overlapping intervals,
+        # so sorting puts both the intervals and their boundaries in order
+        a, b, c, d = [lft, rgt, bound, other_bound].sort
+
+        where_statement(a, d).update_all(
+          conditions(a, b, c, d, target, position)
+        )
       end
-
-      bound, other_bound = get_boundaries(target, position)
-
-      # there would be no change
-      return if bound == rgt || bound == lft
-
-      # we have defined the boundaries of two non-overlapping intervals,
-      # so sorting puts both the intervals and their boundaries in order
-      a, b, c, d = [lft, rgt, bound, other_bound].sort
-
-      where_statement(a, d).update_all(
-        conditions(a, b, c, d, target, position)
-      )
 
       reload_nested_set_values
     end
