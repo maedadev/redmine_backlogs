@@ -6,7 +6,7 @@ module BacklogsVersionPatch
       base.send(:include, InstanceMethods)
 
       base.class_eval do
-        unloadable
+        unloadable if respond_to?(:unloadable)
 
         has_one :sprint_burndown, :class_name => 'RbSprintBurndown', :dependent => :destroy
 

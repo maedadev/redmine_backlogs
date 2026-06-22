@@ -1,7 +1,7 @@
 include RbCommonHelper
 
 class RbTasksController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   def create
     params.permit!

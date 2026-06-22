@@ -1,7 +1,7 @@
 require 'date'
 
 class RbTask < Issue
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   def self.tracker
     task_tracker = Backlogs.setting[:task_tracker]

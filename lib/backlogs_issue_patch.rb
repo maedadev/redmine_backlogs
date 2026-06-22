@@ -7,7 +7,7 @@ module BacklogsIssuePatch
       base.send(:include, InstanceMethods)
 
       base.class_eval do
-        unloadable
+        unloadable if respond_to?(:unloadable)
 
         belongs_to :release, :class_name => 'RbRelease', :foreign_key => 'release_id', optional: true
 

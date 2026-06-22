@@ -3,7 +3,7 @@ include RbFormHelper
 include ProjectsHelper
 
 class RbReleasesMultiviewController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   def index
   end

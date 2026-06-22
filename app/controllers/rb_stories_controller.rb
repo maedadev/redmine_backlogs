@@ -3,7 +3,7 @@ require 'prawn'
 include RbCommonHelper
 
 class RbStoriesController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
   include BacklogsPrintableCards
 
   def index

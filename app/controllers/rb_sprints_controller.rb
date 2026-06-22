@@ -5,7 +5,7 @@ include RbCommonHelper
 # interface used for managing objects within a sprint. For
 # info about the taskboard, see RbTaskboardsController
 class RbSprintsController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   # Accept download as API request as Redmine redirects XML format to this type
   accept_api_auth :download

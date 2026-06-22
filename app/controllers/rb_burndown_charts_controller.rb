@@ -1,7 +1,7 @@
 include RbCommonHelper
 
 class RbBurndownChartsController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   def show
     respond_to do |format|

@@ -6,7 +6,7 @@ module BacklogsProjectPatch
       base.send(:include, InstanceMethods)
 
       base.class_eval do
-        unloadable
+        unloadable if respond_to?(:unloadable)
         has_many :releases, -> { order "#{RbRelease.table_name}.release_start_date DESC, #{RbRelease.table_name}.name DESC" }, :class_name => 'RbRelease', :inverse_of => :project, :dependent => :destroy
         has_many :releases_multiview, :class_name => 'RbReleaseMultiview', :dependent => :destroy
         include Backlogs::ActiveRecord::Attributes

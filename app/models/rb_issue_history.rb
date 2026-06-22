@@ -4,7 +4,11 @@ class RbIssueHistory < ActiveRecord::Base
   self.table_name = 'rb_issue_history'
   belongs_to :issue
 
-  serialize :history, Array
+  if Rails.gem_version >= Gem::Version.new('7.1')
+    serialize :history, coder: YAML, type: Array
+  else
+    serialize :history, Array
+  end
   after_save :touch_sprint
   after_initialize :init_history
   after_create :update_parent

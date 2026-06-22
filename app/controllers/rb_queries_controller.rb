@@ -1,5 +1,5 @@
 class RbQueriesController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   def show
     @query = IssueQuery.new(:name => "_")

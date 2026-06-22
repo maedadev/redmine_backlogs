@@ -1,7 +1,7 @@
 include RbCommonHelper
 
 class RbImpedimentsController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   def create
     @settings = Backlogs.settings

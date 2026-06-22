@@ -15,6 +15,6 @@ module BacklogsProjectsHelperPatch
 end
 
 module ProjectsHelper
-  unloadable
+  unloadable if respond_to?(:unloadable)
   prepend BacklogsProjectsHelperPatch
 end

@@ -158,7 +158,7 @@ class RbRelease < ActiveRecord::Base
   RELEASE_STATUSES = %w(open closed)
   RELEASE_SHARINGS = %w(none descendants hierarchy tree system)
 
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   belongs_to :project, :inverse_of => :releases
   has_many :issues, :class_name => 'RbStory', :foreign_key => 'release_id', :dependent => :nullify

@@ -1,7 +1,7 @@
 include RbCommonHelper
 
 class RbUpdatedItemsController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   # Returns all models that have changed since params[:since]
   # params[:only] limits the types of models that the method

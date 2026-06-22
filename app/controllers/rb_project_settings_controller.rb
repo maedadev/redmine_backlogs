@@ -2,7 +2,7 @@ include RbCommonHelper
 include ProjectsHelper
 
 class RbProjectSettingsController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   def project_settings
     enabled = false

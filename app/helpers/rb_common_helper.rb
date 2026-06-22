@@ -1,7 +1,7 @@
 require 'nokogiri'
 
 module RbCommonHelper
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   include CustomFieldsHelper
   include RbPartialsHelper

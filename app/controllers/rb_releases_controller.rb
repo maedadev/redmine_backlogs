@@ -4,7 +4,7 @@ include ProjectsHelper
 
 # Responsible for exposing release CRUD.
 class RbReleasesController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   def index
     @releases_open = @project.open_releases_by_date

@@ -1,5 +1,5 @@
 class RbWikisController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   # NOTE: This method is public (see init.rb). We will let Redmine core's
   # WikiController#index tak care of autorization

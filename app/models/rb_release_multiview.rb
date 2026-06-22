@@ -3,8 +3,11 @@ class RbReleaseMultiview < ActiveRecord::Base
 
   belongs_to :project
 
-  serialize :release_ids
-
+  if Rails.gem_version >= Gem::Version.new('7.1')
+    serialize :release_ids, coder: YAML
+  else
+    serialize :release_ids
+  end
   validates_presence_of :project_id, :name
   validates_length_of :name, :maximum => 64
 

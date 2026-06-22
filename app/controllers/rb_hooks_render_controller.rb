@@ -1,7 +1,7 @@
 include RbCommonHelper
 
 class RbHooksRenderController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   def view_issues_sidebar
     locals = {

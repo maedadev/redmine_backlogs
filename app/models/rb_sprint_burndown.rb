@@ -5,8 +5,13 @@ class RbSprintBurndown < ActiveRecord::Base
   self.table_name = 'rb_sprint_burndown'
   belongs_to :version
 
-  serialize :stories, Array
-  serialize :burndown, Hash
+  if Rails.gem_version >= Gem::Version.new('7.1')
+    serialize :stories, coder: YAML, type: Array
+    serialize :burndown, coder: YAML, type: Hash
+  else
+    serialize :stories, Array
+    serialize :burndown, Hash
+  end
   after_initialize :init
 
   def direction

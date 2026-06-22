@@ -1,7 +1,7 @@
 include RbCommonHelper
 
 class RbTaskboardsController < RbApplicationController
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   def show
     stories = @sprint.stories

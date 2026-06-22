@@ -1,5 +1,5 @@
 module RbServerVariablesHelper
-  unloadable
+  unloadable if respond_to?(:unloadable)
 
   # Calculates workflow transitions matrix.
   # Used to render server variables for javascript DnD handling
