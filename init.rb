@@ -1,89 +1,5 @@
 require 'redmine'
 
-if Rails.version > '6.0' && Rails.autoloaders.zeitwerk_enabled?
-  if Issue.const_defined? "SAFE_ATTRIBUTES"
-    Issue::SAFE_ATTRIBUTES << "story_points"
-    Issue::SAFE_ATTRIBUTES << "position"
-    Issue::SAFE_ATTRIBUTES << "remaining_hours"
-  else
-    Issue.safe_attributes "story_points", "position", "remaining_hours"
-  end
-  require_relative 'lib/backlogs/active_record/list_with_gaps'
-  require_relative 'lib/backlogs_version_patch'
-  Rails.application.config.after_initialize do
-    require_relative 'lib/backlogs_nested_set_patch'
-    require_relative 'lib/backlogs/active_record'
-    require_relative 'lib/backlogs/active_record/attributes'
-    require_relative 'lib/backlogs'
-    require_relative 'lib/backlogs/linear_regression'
-
-    require_relative 'lib/backlogs_time_report_patch'
-    require_relative 'lib/backlogs_issue_query_patch'
-
-    require_relative 'lib/backlogs_issue_patch'
-    require_relative 'lib/backlogs_issue_status_patch'
-    require_relative 'lib/backlogs_tracker_patch'
-    require_relative 'lib/backlogs_project_patch'
-    require_relative 'lib/backlogs_user_patch'
-    require_relative 'lib/backlogs_custom_field_patch'
-    require_relative 'lib/backlogs_my_controller_patch'
-    require_relative 'lib/backlogs_issues_controller_patch'
-    require_relative 'lib/backlogs_projects_helper_patch'
-    require_relative 'lib/backlogs_hooks'
-    require_relative 'lib/backlogs_merged_array'
-    require_relative 'lib/backlogs_printable_cards'
-
-    Redmine::AccessControl.permission(:manage_versions).actions << "rb_sprints/close_completed"
-  end
-else
-  Rails.configuration.to_prepare do
-    require_dependency 'backlogs_nested_set_patch'
-    require_dependency 'backlogs/active_record'
-    require_dependency 'backlogs/active_record/attributes'
-    require_dependency 'backlogs/active_record/list_with_gaps'
-    require_dependency 'backlogs'
-    require_dependency 'issue'
-
-    if Issue.const_defined? "SAFE_ATTRIBUTES"
-      Issue::SAFE_ATTRIBUTES << "story_points"
-      Issue::SAFE_ATTRIBUTES << "position"
-      Issue::SAFE_ATTRIBUTES << "remaining_hours"
-    else
-      Issue.safe_attributes "story_points", "position", "remaining_hours"
-    end
-
-    require_dependency 'backlogs_time_report_patch'
-
-    begin
-      require_dependency 'backlogs_issue_query_patch'
-    rescue ActiveRecord::StatementInvalid
-      puts "Warning: cannot load backlogs_issue_query_patch until database gets ready"
-    end
-
-    require_dependency 'backlogs_issue_patch'
-    require_dependency 'backlogs_issue_status_patch'
-    require_dependency 'backlogs_tracker_patch'
-    require_dependency 'backlogs_version_patch'
-    require_dependency 'backlogs_project_patch'
-    require_dependency 'backlogs_user_patch'
-    require_dependency 'backlogs_custom_field_patch'
-
-    require_dependency 'backlogs_my_controller_patch'
-    require_dependency 'backlogs_issues_controller_patch'
-    require_dependency 'backlogs_projects_helper_patch'
-
-    require_dependency 'backlogs_hooks'
-
-    require_dependency 'backlogs_merged_array'
-
-    require_dependency 'backlogs_printable_cards'
-    require_dependency 'backlogs/linear_regression'
-
-    Redmine::AccessControl.permission(:manage_versions).actions << "rb_sprints/close_completed"
-  end
-end
-
-
 Redmine::Plugin.register :redmine_backlogs do
   requires_redmine :version_or_higher => '5.0'
   name 'Redmine Backlogs'
@@ -201,4 +117,87 @@ Redmine::Plugin.register :redmine_backlogs do
       User.current.allowed_to?({:controller => :rb_all_projects, :action => :statistics}, nil, :global => true) &&
       Backlogs.setting[:scrum_stats_menu_position] == 'application'
     }
+end
+
+if Rails.version > '6.0' && Rails.autoloaders.zeitwerk_enabled?
+  if Issue.const_defined? "SAFE_ATTRIBUTES"
+    Issue::SAFE_ATTRIBUTES << "story_points"
+    Issue::SAFE_ATTRIBUTES << "position"
+    Issue::SAFE_ATTRIBUTES << "remaining_hours"
+  else
+    Issue.safe_attributes "story_points", "position", "remaining_hours"
+  end
+  require_relative 'lib/backlogs/active_record/list_with_gaps'
+  require_relative 'lib/backlogs_version_patch'
+  Rails.application.config.after_initialize do
+    require_relative 'lib/backlogs_nested_set_patch'
+    require_relative 'lib/backlogs/active_record'
+    require_relative 'lib/backlogs/active_record/attributes'
+    require_relative 'lib/backlogs'
+    require_relative 'lib/backlogs/linear_regression'
+
+    require_relative 'lib/backlogs_time_report_patch'
+    require_relative 'lib/backlogs_issue_query_patch'
+
+    require_relative 'lib/backlogs_issue_patch'
+    require_relative 'lib/backlogs_issue_status_patch'
+    require_relative 'lib/backlogs_tracker_patch'
+    require_relative 'lib/backlogs_project_patch'
+    require_relative 'lib/backlogs_user_patch'
+    require_relative 'lib/backlogs_custom_field_patch'
+    require_relative 'lib/backlogs_my_controller_patch'
+    require_relative 'lib/backlogs_issues_controller_patch'
+    require_relative 'lib/backlogs_projects_helper_patch'
+    require_relative 'lib/backlogs_hooks'
+    require_relative 'lib/backlogs_merged_array'
+    require_relative 'lib/backlogs_printable_cards'
+
+    Redmine::AccessControl.permission(:manage_versions).actions << "rb_sprints/close_completed"
+  end
+else
+  Rails.configuration.to_prepare do
+    require_dependency 'backlogs_nested_set_patch'
+    require_dependency 'backlogs/active_record'
+    require_dependency 'backlogs/active_record/attributes'
+    require_dependency 'backlogs/active_record/list_with_gaps'
+    require_dependency 'backlogs'
+    require_dependency 'issue'
+
+    if Issue.const_defined? "SAFE_ATTRIBUTES"
+      Issue::SAFE_ATTRIBUTES << "story_points"
+      Issue::SAFE_ATTRIBUTES << "position"
+      Issue::SAFE_ATTRIBUTES << "remaining_hours"
+    else
+      Issue.safe_attributes "story_points", "position", "remaining_hours"
+    end
+
+    require_dependency 'backlogs_time_report_patch'
+
+    begin
+      require_dependency 'backlogs_issue_query_patch'
+    rescue ActiveRecord::StatementInvalid
+      puts "Warning: cannot load backlogs_issue_query_patch until database gets ready"
+    end
+
+    require_dependency 'backlogs_issue_patch'
+    require_dependency 'backlogs_issue_status_patch'
+    require_dependency 'backlogs_tracker_patch'
+    require_dependency 'backlogs_version_patch'
+    require_dependency 'backlogs_project_patch'
+    require_dependency 'backlogs_user_patch'
+    require_dependency 'backlogs_custom_field_patch'
+
+    require_dependency 'backlogs_my_controller_patch'
+    require_dependency 'backlogs_issues_controller_patch'
+    require_dependency 'backlogs_projects_helper_patch'
+
+    require_dependency 'backlogs_hooks'
+
+    require_dependency 'backlogs_merged_array'
+
+    require_dependency 'backlogs_printable_cards'
+    require_dependency 'backlogs/linear_regression'
+
+    Redmine::AccessControl.permission(:manage_versions).actions << "rb_sprints/close_completed"
+  end
 end
